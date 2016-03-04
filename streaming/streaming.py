@@ -1,7 +1,7 @@
 import json
 import time
 from codecs import open
-from datetime import datetime
+from dateutil import parser
 
 import tweepy
 from elasticsearch import Elasticsearch
@@ -27,7 +27,7 @@ class TwittMapListener(tweepy.StreamListener):
             geo = decoded.get('coordinates')
             if geo:
                 geo = geo['coordinates']
-                timestamp = datetime.strptime(decoded['created_at'], '%a %b %d %H:%M:%S %z %Y')
+                timestamp = parser.parse(decoded['created_at'])
                 timestamp = timestamp.strftime('%Y-%m-%dT%H:%M:%SZ')
                 tweet = {
                     'user': decoded['user']['screen_name'],
