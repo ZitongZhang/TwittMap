@@ -1,1 +1,4 @@
+*.pyc
 streaming/tokens.py
+streaming/streaming.log
+
