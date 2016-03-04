@@ -35,3 +35,8 @@ curl -XPUT <Elasticsearch Endpoint>/twittmap -d '
     }
 }'
 ```
+
+## Step 3: Streaming Tweets
+1. Create an EC2 instance, and configure the security group to allow traffic on port 443
+2. Pull the repo from Github, `cd` into `streaming`, and run `pip install -r requirements.txt`
+3. Run `python streaming.py &`
