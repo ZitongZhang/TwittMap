@@ -1,5 +1,6 @@
 import json
 import time
+from codecs import open
 from datetime import datetime
 
 import tweepy
