@@ -19,7 +19,6 @@ io.on('connection', function (socket) {
     socket.emit('news', {message: 'welcome!', id: socket.id});//Note that emit event name on the server matches the emit event name
 
     socket.on('my other event', function (data) {
-        console.log(data);
         var key = data.key;
         client.search({
             q: key,
