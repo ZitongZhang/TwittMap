@@ -7,7 +7,6 @@ var bodyParser = require('body-parser');
 var elasticsearch = require('elasticsearch');
 
 
-//var routes = require('./routes/index');
 var users = require('./routes/users');
 
 var app = express();
@@ -16,15 +15,13 @@ var server = require('http').Server(app);
 var io = require('socket.io')(server);
 
 var client = new elasticsearch.Client({
-    host: 'https://search-twittmap-qtnxkqs26tfzc27letgg2blf5i.us-east-1.es.amazonaws.com:443',
-    log: 'trace'
-
+    host: 'https://search-twittmap-qtnxkqs26tfzc27letgg2blf5i.us-east-1.es.amazonaws.com:443'
 });
 
 server.listen(2222);
 
 app.get('/', function (req, res) {
-    res.sendFile(__dirname + '/routes/twittermap.html');
+    res.sendFile(__dirname + '/routes/twittmap.html');
 });
 
 io.on('connection', function (socket) {

@@ -6,7 +6,7 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
 
-    <title>Twitter Map</title>
+    <title>TwittMap</title>
 
     <link rel="stylesheet" href="header-search.css">
 
@@ -39,8 +39,8 @@
         })();
         function initialize() {
             var mapOptions = {
-                zoom: 3,
-                center: {lat: 40.730610, lng: -73.935242},
+                zoom: 4,
+                center: {lat: 40.7127, lng: -74.0059},
                 mapTypeId: google.maps.MapTypeId.TERRAIN
             };
             map = new google.maps.Map(document.getElementById('map'),
@@ -61,9 +61,10 @@
             google.maps.event.addListener(marker, "click", function () {
                 if (infowindow)infowindow.close();
                 infowindow = new google.maps.InfoWindow({
-                    content: '<div id="bodyContent">' + '<a href="https://twitter.com/' + user + '">' + '<b>' + user + '</b></a>: ' + text + '</p>' +
-                    '<p><b>' + time + '</b></p>' +
-                    '</div>'
+                    content: '<div id="bodyContent">' + '<a href="https://twitter.com/' + user + '">' + '<b>' + user + '</b></a>: '
+                                + text + '</p>' +
+                                '<p><b>' + time + '</b></p>' +
+                                '</div>'
                 });
                 infowindow.open(map, marker);
             });
@@ -83,7 +84,7 @@
 
     <div class="header-limiter">
 
-        <h1><a href="#">Twitter <span>Map</span></a></h1>
+        <h1><a href="#">Twitt<span>Map</span></a></h1>
 
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
         <select id="combo">
@@ -101,7 +102,6 @@
         </select>
         <input id="button1" type="button" value="Filter!"/>
         <script src="https://cdn.socket.io/socket.io-1.2.1.js"></script>
-        <!--</form>-->
 
     </div>
 
@@ -116,7 +116,6 @@
     var socket = io.connect('http://localhost');
 
     socket.on('news', function (data) {
-        console.log(data.message);
     });
 
     $('#button1').click(function () {
