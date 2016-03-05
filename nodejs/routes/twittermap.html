@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+    <title>Twitter Map</title>
+
+    <link rel="stylesheet" href="header-search.css">
+
+    <link href='http://fonts.googleapis.com/css?family=Cookie' rel='stylesheet' type='text/css'>
+    <style>
+        #map {
+            height: 750px;
+        }
+    </style>
+    <script src="https://maps.googleapis.com/maps/api/js"></script>
+    <script>
+        var map;
+        var infowindow;
+        (function () {
+            google.maps.Map.prototype.markers = new Array();
+            google.maps.Map.prototype.addMarker = function (marker) {
+                this.markers[this.markers.length] = marker;
+            };
+            google.maps.Map.prototype.getMarkers = function () {
+                return this.markers
+            };
+            google.maps.Map.prototype.clearMarkers = function () {
+                if (infowindow) {
+                    infowindow.close();
+                }
+                for (var i = 0; i < this.markers.length; i++) {
+                    this.markers[i].set_map(null);
+                }
+            };
+        })();
+        function initialize() {
+            var mapOptions = {
+                zoom: 3,
+                center: {lat: 40.730610, lng: -73.935242},
+                mapTypeId: google.maps.MapTypeId.TERRAIN
+            };
+            map = new google.maps.Map(document.getElementById('map'),
+                    mapOptions);
+            return map;
+        }
+
+        function createMarker(twitter) {
+            var latLng = new google.maps.LatLng(twitter.geo[1], twitter.geo[0]);
+            var user = twitter.user;
+            var time = twitter.time;
+            var text = twitter.text;
+
+            var marker = new google.maps.Marker({
+                position: latLng,
+                map: map
+            });
+            google.maps.event.addListener(marker, "click", function () {
+                if (infowindow)infowindow.close();
+                infowindow = new google.maps.InfoWindow({
+                    content: '<div id="bodyContent">' + '<a href="https://twitter.com/' + user + '">' + '<b>' + user + '</b></a>: ' + text + '</p>' +
+                    '<p><b>' + time + '</b></p>' +
+                    '</div>'
+                });
+                infowindow.open(map, marker);
+            });
+            return marker;
+        }
+        // Call the initialize function after the page has finished loading
+        google.maps.event.addDomListener(window, 'load', initialize);
+
+
+    </script>
+
+</head>
+
+<body>
+
+<header class="header-search">
+
+    <div class="header-limiter">
+
+        <h1><a href="#">Twitter <span>Map</span></a></h1>
+
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+        <select id="combo">
+            <option searchKeyword="1">Trump</option>
+            <option searchKeyword="2">Hillary</option>
+            <option searchKeyword="3">Sanders</option>
+            <option searchKeyword="4">Facebook</option>
+            <option searchKeyword="5">LinkedIn</option>
+            <option searchKeyword="6">Amazon</option>
+            <option searchKeyword="7">Google</option>
+            <option searchKeyword="8">Uber</option>
+            <option searchKeyword="9">Columbia</option>
+            <option searchKeyword="10">New York</option>
+
+        </select>
+        <input id="button1" type="button" value="Filter!"/>
+        <script src="https://cdn.socket.io/socket.io-1.2.1.js"></script>
+        <!--</form>-->
+
+    </div>
+
+</header>
+
+<!-- The content of your page would go here. -->
+
+<div width="100%" id="map"></div>
+
+
+<script>
+    var socket = io.connect('http://localhost');
+
+    socket.on('news', function (data) {
+        console.log(data.message);
+    });
+
+    $('#button1').click(function () {
+        var keyword = $('#combo :selected').text();
+        socket.emit('my other event', {key: keyword});
+
+        socket.on('toggle', function (newdata) {    //of the client in this case.
+            var tweets = newdata.tweet;
+            var map = initialize();
+            for (var i = 0; i < tweets.length; i++) {
+                map.addMarker(createMarker(tweets[i]));
+            }
+        });
+    });
+
+</script>
+
+</body>
+
+</html>
