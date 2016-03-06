@@ -8,7 +8,7 @@ app.get('/', function (req, res) {
     res.sendfile(__dirname + '/public/index.html');
 });
 
-server.listen(80);
+server.listen(2222);
 
 var elasticsearch = require('elasticsearch');
 var client = new elasticsearch.Client({
